@@ -168,4 +168,5 @@ cython_debug/
 data/train/
 data/model*.h5
 data/test/
+results/
 
