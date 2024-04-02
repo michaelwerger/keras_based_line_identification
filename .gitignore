@@ -169,5 +169,5 @@ data/train/
 data/model*.h5
 data/test/
 results/
-src/scratch.ipynb
+src/scratch*.ipynb
 
