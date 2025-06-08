@@ -81,30 +81,44 @@ I use a directory ~/conda/py311 for the miniconda environment and
 a separate directory ~/conda/channel/apple for packages downloaded here
 
 > cd ~
+> 
 > cd conda
 
 Download the installation script for minicona for Apple silicon from https://repo.anaconda.com/miniconda/ into ~/conda/py311,
 then continue as follows
 
 > bash ./py311/Miniconda3-py311_25.3.1-1-MacOSX-arm64.sh -b -u -p ~/conda/py311
+> 
 > source py311/bin/activate
 
 Then, switch to the project directory
 > cd ~/Workspaces
+> 
 > cd keras_based_line_identification
+> 
 > conda create -n tf python=3.11.11
+> 
 > conda activate tf
 
-Downlaod tensorflow-deps-2.10.0-0.tar.bz2 from https://anaconda.org/apple/tensorflow-deps/files
+Download tensorflow-deps-2.10.0-0.tar.bz2 from https://anaconda.org/apple/tensorflow-deps/files
 > conda install ~/conda/channel/apple/tensorflow-deps-2.10.0-0.tar.bz2
+> 
 > pip install tensorflow-metal
+> 
 > pip install pandas
+> 
 > pip install matplotlib
+> 
 > pip install scikit-learn
+> 
 > pip install scipy
+> 
 > pip install 'imageio==2.37.0'
+> 
 > pip install plotly
+> 
 > pip install opencv-python
+> 
 > conda install notebook
 
 You may then use src/check_gpu.ipynb for an output similar to this:
