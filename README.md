@@ -1,3 +1,5 @@
+# Overview
+
 A Keras based line detection for automatic wavelength calibration
 
 (this documentation will be more detailed.)
@@ -58,7 +60,65 @@ which are greatly appreciated!
   
 The principal idea of the procedure is based on parts from the following 
 books:
-Matthieu Deru, Alassane Ndiaye: Deep Leaning with Tensorflow Keras und Tensorflow.js, Rheinwerk Verlag, 2020
-Joachim Steinwendner, Roland Schwaiger, Neuronale Netze programmieren mit Python, Rheinwerk Verlag, 2020
+* Matthieu Deru, Alassane Ndiaye: Deep Leaning with Tensorflow Keras und Tensorflow.js, Rheinwerk Verlag, 2020
+* Joachim Steinwendner, Roland Schwaiger, Neuronale Netze programmieren mit Python, Rheinwerk Verlag, 2020
 
-Michael Werger, July 2023
+# Creating the Python environment
+
+It was a bit tricky to create an Python virtual environment which supports GPU usage on a Apple M1 pro.
+Note: Tensorflow does not officially support Apple silicon GPUs in the recent versions. However, there is a
+a way using a set of compatible libraries, python 3.11 and some little "tricks".
+
+There are a lot of similar descriptions to enable GPU usage with tensorflow, but neither of them worked - they ended in kernel crashes, 
+missing symbol problems, incompatibility issues with numpy and other libraries and so on, as documented here
+* https://numpy.org/doc/stable/user/troubleshooting-importerror.html
+* https://github.com/jax-ml/jax/discussions/19343
+* https://github.com/jax-ml/jax/discussions/22289
+
+The following worked for me for this project:
+
+I use a directory ~/conda/py311 for the miniconda environment and 
+a separate directory ~/conda/channel/apple for packages downloaded here
+
+> cd ~
+> cd conda
+
+Download the installation script for minicona for Apple silicon from https://repo.anaconda.com/miniconda/ into ~/conda/py311,
+then continue as follows
+
+> bash ./py311/Miniconda3-py311_25.3.1-1-MacOSX-arm64.sh -b -u -p ~/conda/py311
+> source py311/bin/activate
+
+Then, switch to the project directory
+> cd ~/Workspaces
+> cd keras_based_line_identification
+> conda create -n tf python=3.11.11
+> conda activate tf
+
+Downlaod tensorflow-deps-2.10.0-0.tar.bz2 from https://anaconda.org/apple/tensorflow-deps/files
+> conda install ~/conda/channel/apple/tensorflow-deps-2.10.0-0.tar.bz2
+> pip install tensorflow-metal
+> pip install pandas
+> pip install matplotlib
+> pip install scikit-learn
+> pip install scipy
+> pip install 'imageio==2.37.0'
+> pip install plotly
+> pip install opencv-python
+> conda install notebook
+
+You may then use src/check_gpu.ipynb for an output similar to this:
+
+```
+Python Platform: macOS-15.5-arm64-arm-64bit
+Tensor Flow Version: 2.16.2
+Keras Version: 3.10.0
+
+Python 3.11.11 (main, Dec 11 2024, 10:25:04) [Clang 14.0.6 ]
+Pandas 2.3.0
+Scikit-Learn 1.7.0
+SciPy 1.15.3
+GPU is available
+```
+
+Michael Werger, June 2025
