@@ -118,6 +118,8 @@ Download tensorflow-deps-2.10.0-0.tar.bz2 from https://anaconda.org/apple/tensor
 > pip install plotly
 > 
 > pip install opencv-python
+>
+> pip install prettytable
 > 
 > conda install notebook
 
