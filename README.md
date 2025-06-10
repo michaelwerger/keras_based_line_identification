@@ -104,6 +104,8 @@ Download tensorflow-deps-2.10.0-0.tar.bz2 from https://anaconda.org/apple/tensor
 > conda install ~/conda/channel/apple/tensorflow-deps-2.10.0-0.tar.bz2
 > 
 > pip install tensorflow-metal
+>
+> pip install tensorflow-macos
 > 
 > pip install pandas
 > 
