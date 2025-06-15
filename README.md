@@ -139,6 +139,9 @@ GPU is available
 
 Update 2025-06-15:
 Scaling factor added for intensity in training images
+the trained model achieves an accuracy of roughly 91 % (run test.ipynb or test.py for inference)
+if used on real data (e.g., measurement of an calibration lamp), a simple rule significantly 
+improves the result, see "filtertransmission" project
 the trained model is used in project "filtertransmission" to calibrate the grism dispersion
 
 Michael Werger, June 2025
