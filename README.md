@@ -135,6 +135,10 @@ Pandas 2.3.0
 Scikit-Learn 1.7.0
 SciPy 1.15.3
 GPU is available
-```
+````
+
+Update 2025-06-15:
+Scaling factor added for intensity in training images
+the trained model is used in project "filtertransmission" to calibrate the grism dispersion
 
 Michael Werger, June 2025
