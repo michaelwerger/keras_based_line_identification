@@ -1,5 +1,5 @@
 # %%
-%load_ext tensorboard
+#%load_ext tensorboard
 
 #
 #
@@ -40,7 +40,7 @@ os.makedirs(logs_base_dir, exist_ok=True)
 NUM_OUTPUTS = 26 # no. of peaks
 NUM_BATCHES = 32
 NUM_EPOCHS = 100
-IMAGE_SIZE = 32
+IMAGE_SIZE = 64
 #NUM_TRAIN_LABELS = 2600 # use outpuf of load_images()
 
 TRAIN_DATA_PATH= os.path.join(os.getcwd(), '..','data','train')
