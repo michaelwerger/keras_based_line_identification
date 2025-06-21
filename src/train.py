@@ -18,6 +18,8 @@ import cv2
 import shutil
 import random
 import uuid
+from datetime import datetime
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import load_model
@@ -33,19 +35,19 @@ from lib import find_nearest_index, FigureSize
 
 
 # %%
-logs_base_dir = "./logs"
+logs_base_dir = str(Path('.') / 'logs')
 os.makedirs(logs_base_dir, exist_ok=True)
 
 # %%
 NUM_OUTPUTS = 26 # no. of peaks
 NUM_BATCHES = 32
-NUM_EPOCHS = 100
+NUM_EPOCHS = 10
 IMAGE_SIZE = 64
 #NUM_TRAIN_LABELS = 2600 # use outpuf of load_images()
 
-TRAIN_DATA_PATH= os.path.join(os.getcwd(), '..','data','train')
-TEST_DATA_PATH = os.path.join(os.getcwd(), '..','data','test')
-MODEL_PATH = os.path.join(os.getcwd(), '..','data','model.h5')
+TRAIN_DATA_PATH= str(Path('.') / '..' / 'data' / 'train')
+TEST_DATA_PATH = str(Path('.') / '..' / 'data' / 'test')
+MODEL_PATH = str(Path('.') / '..' / 'data' / 'model' / datetime.now().strftime('model-%Y%m%d%H%M%S.h5'))
 
 TESTDATA_TRAINDATA_RATIO = 20./80.
 
@@ -54,11 +56,11 @@ os.makedirs(TRAIN_DATA_PATH, exist_ok=True)
 os.makedirs(TEST_DATA_PATH, exist_ok=True)
 
 # %%
-NEON_REFERENCE_FILE = os.path.join(os.getcwd(),'..','data','ref','NIST','Ne','neon-exported.csv')
+NEON_REFERENCE_FILE = str(Path('.') / '..' / 'data' / 'ref' / 'NIST' / 'Ne' /'neon-exported.csv')
 WAVELENGTHS_MIN, WAVELENGTHS_MAX = 4000, 9000
-WINDOW = 512
+WINDOW = 256
 STEPSIZE_MIN, STEPSIZE_MAX, STEPSIZE_N = 0.5, 1.5, 2000
-INTENSITY_SCALE = 255
+INTENSITY_SCALE = 250
 
 # %%
 RANDOM_NUMBER = math.pow(10,int(math.log10(STEPSIZE_N *NUM_OUTPUTS))+1)
@@ -77,7 +79,7 @@ def build_model():
         
     model = tf.keras.Sequential()
     model.add(tf.keras.layers.Reshape((IMAGE_SIZE,IMAGE_SIZE,1),input_shape=(IMAGE_SIZE,IMAGE_SIZE,1)))
-    model.add(tf.keras.layers.Conv2D(filters=32, kernel_size=(5,5), activation='relu'))
+    model.add(tf.keras.layers.Conv2D(filters=IMAGE_SIZE, kernel_size=(5,5), activation='relu'))
     model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
     model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=(5,5), activation='relu'))
     model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))         
@@ -231,7 +233,7 @@ nx = len(normalized_intensities)
 
 twod = np.zeros((ny, nx))
 for i in range(ny):
-    twod[i] = normalized_intensities*-1+1.0
+    twod[i] = normalized_intensities
 
 ylim = [0,ny]
 
@@ -256,7 +258,7 @@ for index in range(0,len(neon_wavelengths)):
             find_nearest_index(wavelengths,neon_w)+window_h,
     ]
     _ylim = [0,ny]
-    _twod = twod[_ylim[0]:_ylim[1], _xlim[0]:_xlim[1]]
+    _twod = np.log10(twod[_ylim[0]:_ylim[1], _xlim[0]:_xlim[1]]+1.0)
     wavelength_text = str(int(neon_w*100)/100)
     print(index, neon_w, wavelength_text, _xlim)
     _res = cv2.resize(np.uint8(_twod * INTENSITY_SCALE), dsize=(IMAGE_SIZE, IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)
@@ -340,7 +342,7 @@ for stepsize in stepsizes:
             find_nearest_index(wavelengths,neon_w)+window_h,
         ]
         _ylim = [0,ny]
-        _twod = twod[_ylim[0]:_ylim[1], _xlim[0]:_xlim[1]]
+        _twod = np.log10(twod[_ylim[0]:_ylim[1], _xlim[0]:_xlim[1]]+1.0)
         wavelength_text = str(int(neon_w*100)/100)
         
         res = cv2.resize(np.uint8(_twod * INTENSITY_SCALE), dsize=(IMAGE_SIZE, IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)
@@ -359,9 +361,6 @@ for stepsize in stepsizes:
 
 
     
-
-# %%
-
 
 # %%
 train_images, train_labels  = load_images(TRAIN_DATA_PATH)
