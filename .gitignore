@@ -169,4 +169,6 @@ data/train/
 data/model.h5
 data/test/*.BMP
 *.pickle
+scratch*
+dummy*
 
